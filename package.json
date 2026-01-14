@@ -1,0 +1,6 @@
+{
+  "name" : "wasm-zip",
+  "scripts": {
+    "run:test" : "node ./web/test.js"
+  }
+}

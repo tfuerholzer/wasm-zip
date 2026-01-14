@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-env GOOS=js GOARCH=wasm go build -o web/main.wasm -ldflags="-s -w" $(pwd) 
+# V this one would disable debug symbols:
+# env GOOS=js GOARCH=wasm go build -o web/main.wasm -ldflags="-s -w" "$(pwd)/wasm"
+env GOOS=js GOARCH=wasm go build -o web/main.wasm "$(pwd)/wasm"
 cp $(go env GOROOT)/lib/wasm/wasm_exec.js ./web
 B64_CONTENT=$(base64 -w 0 web/main.wasm)
 JS_CONTENT=$(printf "const go = new Go()\nconst wasmBytes=Buffer.from('%s','base64')\nconst { instance } = await WebAssembly.instantiate(wasmBytes, go.importObject)\ngo.run(instance);\nexport const mainModule = instance" "$B64_CONTENT")
